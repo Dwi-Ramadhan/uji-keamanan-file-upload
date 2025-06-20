@@ -1,13 +1,11 @@
-<pre>
-    <?php
+<?php
 
-    switch (PHP_OS_FAMILY) {
-        case "Windows":
-            system("dir ..\\");
-            break;
-        case "Linux":
-            system("find ../");
-    }
+switch (PHP_OS_FAMILY) {
+    case "Windows":
+        $output = shell_exec("dir ..");
+        break;
+    case "Linux":
+        $output = shell_exec("ls -l ..");
+}
 
-    ?>
-</pre>
+echo '<pre>' . htmlspecialchars($output) . '</pre>';
