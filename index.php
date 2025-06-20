@@ -1,6 +1,8 @@
 <?php
 
-$whitelist_type = array('image/jpg', 'image/jpeg', 'image/png', 'image/bmp');
+$whitelist = array('jpg', 'jpeg', 'png', 'bmp');
+$whitelist_mime = array_map(fn($e) => 'image/' . $e, $whitelist);
+
 
 if (isset($_POST['submit'])) {
     $target_dir = "uploads/";
@@ -8,8 +10,8 @@ if (isset($_POST['submit'])) {
     $uploadOK = false;
     $error_message = 'Terjadi Error';
 
-    $cek_ekstensi = pathinfo($target_path, PATHINFO_EXTENSION);
-    if (!in_array($_FILES['imageFile']['type'], $whitelist_type) || $cek_ekstensi == 'php') {
+    $file_extension = pathinfo($target_path, PATHINFO_EXTENSION);
+    if (!in_array($_FILES['imageFile']['type'], $whitelist_mime) || !in_array($file_extension, $whitelist)) {
         $error_message = "File yang di-upload harus berupa gambar!";
     } else {
         if (move_uploaded_file($_FILES['imageFile']['tmp_name'], $target_path)) {
