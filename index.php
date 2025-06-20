@@ -10,7 +10,7 @@ if (isset($_POST['submit'])) {
     $uploadOK = false;
     $error_message = 'Terjadi Error';
 
-    $file_extension = pathinfo($target_path, PATHINFO_EXTENSION);
+    $file_extension = strtolower(pathinfo($target_path, PATHINFO_EXTENSION));
     if (!in_array($_FILES['imageFile']['type'], $whitelist_mime) || !in_array($file_extension, $whitelist)) {
         $error_message = "File yang di-upload harus berupa gambar!";
     } else {
