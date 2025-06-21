@@ -8,14 +8,14 @@ if (isset($_POST['submit'])) {
     $uploadOK = false;
     $error_message = 'Terjadi Error';
 
-    if (!in_array($_FILES['imageFile']['type'], $whitelist_type)) {
-        $error_message = "File yang di-upload harus berupa gambar!";
-    } else {
+    if (in_array($_FILES['imageFile']['type'], $whitelist_type)) {
         if (move_uploaded_file($_FILES['imageFile']['tmp_name'], $target_path)) {
             $uploadOK = true;
         } else {
             $error_message = 'Upload gagal!';
         }
+    } else {
+        $error_message = "File yang di-upload harus berupa gambar (jpg, jpeg, png, bmp)!";
     }
 }
 
@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Gambar - Kurang Aman</title>
+    <title>Upload Gambar - Tidak Aman</title>
 
     <link rel="stylesheet" href="style/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">

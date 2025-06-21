@@ -5,19 +5,40 @@ $whitelist_mime = array_map(fn($e) => 'image/' . $e, $whitelist);
 
 
 if (isset($_POST['submit'])) {
-    $target_dir = "uploads/";
-    $target_path = $target_dir . basename($_FILES['imageFile']['name']);
     $uploadOK = false;
     $error_message = 'Terjadi Error';
 
-    $file_extension = strtolower(pathinfo($target_path, PATHINFO_EXTENSION));
-    if (!in_array($_FILES['imageFile']['type'], $whitelist_mime) || !in_array($file_extension, $whitelist)) {
-        $error_message = "File yang di-upload harus berupa gambar!";
-    } else {
-        if (move_uploaded_file($_FILES['imageFile']['tmp_name'], $target_path)) {
-            $uploadOK = true;
+    if (isset($_FILES['imageFile']) && $_FILES['imageFile']['error'] === UPLOAD_ERR_OK) {
+        $target_dir = "uploads/";
+        $temp_path = $_FILES['imageFile']['tmp_name'];
+        $file_extension = strtolower(pathinfo($_FILES['imageFile']['name'], PATHINFO_EXTENSION));
+
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $filetype = finfo_file($finfo, $temp_path);
+        finfo_close($finfo);
+
+        if (in_array($filetype, $whitelist_mime) && in_array($file_extension, $whitelist)) {
+            $filename = uniqid('', true) . '.' . $file_extension;
+            $target_path = $target_dir . $filename;
+
+            if (move_uploaded_file($temp_path, $target_path)) {
+                $uploadOK = true;
+            } else {
+                $error_message = 'Upload gagal! Terjadi kesalahan saat memindahkan file';
+            }
         } else {
-            $error_message = 'Upload gagal!';
+            $error_message = "File yang di-upload harus berupa gambar (jpg, jpeg, png, bmp)!";
+        }
+    } else {
+        switch ($_FILES['imageFile']['error'] ?? null) {
+            case UPLOAD_ERR_INI_SIZE:
+                $error_message = "File terlalu besar (melebihi konfigurasi server)";
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                $error_message = "Tidak ada file yang di-upload";
+                break;
+            default:
+                $error_message = "Terjadi error saat upload";
         }
     }
 }

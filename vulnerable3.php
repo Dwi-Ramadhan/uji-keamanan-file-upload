@@ -1,15 +1,24 @@
 <?php
 
+$whitelist = array('jpg', 'jpeg', 'png', 'bmp');
+$whitelist_mime = array_map(fn($e) => 'image/' . $e, $whitelist);
+
+
 if (isset($_POST['submit'])) {
     $target_dir = "uploads/";
-    $target_path = $target_dir . $_FILES['imageFile']['full_path'];
+    $target_path = $target_dir . basename($_FILES['imageFile']['name']);
     $uploadOK = false;
     $error_message = 'Terjadi Error';
 
-    if (move_uploaded_file($_FILES['imageFile']['tmp_name'], $target_path)) {
-        $uploadOK = true;
+    $file_extension = strtolower(pathinfo($target_path, PATHINFO_EXTENSION));
+    if (in_array($_FILES['imageFile']['type'], $whitelist_mime) && in_array($file_extension, $whitelist)) {
+        if (move_uploaded_file($_FILES['imageFile']['tmp_name'], $target_path)) {
+            $uploadOK = true;
+        } else {
+            $error_message = 'Upload gagal!';
+        }
     } else {
-        $error_message = 'Upload gagal!';
+        $error_message = "File yang di-upload harus berupa gambar (jpg, jpeg, png, bmp)!";
     }
 }
 
@@ -21,7 +30,7 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Gambar - Sangat Tidak Aman</title>
+    <title>Upload Gambar - Kurang Aman</title>
 
     <link rel="stylesheet" href="style/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
