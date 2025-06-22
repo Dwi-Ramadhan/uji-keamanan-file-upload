@@ -1,0 +1,7 @@
+# Options -ExecCGI -Indexes
+# RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .cgi .pl .py .sh
+# 
+# <FilesMatch "\.(php|phtml|php3|php4|php5|php7|cgi|pl|py|sh)$">
+#     SetHandler text/plain
+#     ForceType text/plain
+# </FilesMatch>
