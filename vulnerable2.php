@@ -1,6 +1,6 @@
 <?php
 
-$whitelist_type = array('image/jpg', 'image/jpeg', 'image/png', 'image/bmp');
+$whitelist_type = array('image/jpg', 'image/jpeg', 'image/png');
 
 if (isset($_POST['submit'])) {
     $target_dir = "uploads/";
@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
             $error_message = 'Upload gagal!';
         }
     } else {
-        $error_message = "File yang di-upload harus berupa gambar (jpg, jpeg, png, bmp)!";
+        $error_message = "File yang di-upload harus berupa gambar (jpg, jpeg, png)!";
     }
 }
 
@@ -80,7 +80,7 @@ if (isset($_POST['submit'])) {
             <div>
                 <label for="file-input" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Pilih file</label>
                 <input type="file" id="file-input" name="imageFile" accept="image/*" required class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-300" id="file_input_help">Hanya menerima file PNG, JPG, JPEG, BMP.</p>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-300" id="file_input_help">Hanya menerima file PNG, JPG, JPEG.</p>
             </div>
 
             <button type="submit" name="submit" class="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-semibold text-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800 transition duration-300 ease-in-out transform hover:-translate-y-1 shadow-md hover:shadow-lg">
